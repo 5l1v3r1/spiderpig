@@ -1,0 +1,7 @@
+app.alert(nIcon,nType,cTitle,oDoc,oCheckbox)
+this.addIcon(cName,oIcon) 	 
+util.crackURL(cURL)
+this.media.newPlayer(oArgs)
+app.getNthPlugInName(nInt)
+ 
+

@@ -1,0 +1,74 @@
+
+spiderpig -- a pdf javascript fuzzer
+by consoul  <sachinshinde11[at]gmail.com>
+
+-------------------------------------------------------------------------------------------
+
+<</Intro>>
+Adobe and others uses javascript in pdfs to enhance standard workflow for example connecting to database
+,spell checking,printing n viewing etc..when we open pdf in reader,it executes  this javascript code(ya we all know that).
+so goal of spiderpig is to find bugs in pdf reader's javascript engine.
+spiderpig reads methods prototype from an input file and creates pdf file.
+Most of the pdf fuzzers which are available on internet are file format fuzzers which tries
+to fuzz the adobe's file format implementation.I didnt find one fuzzer which fuzzes adobe's javascript
+imeplementaiton,so here we have spiderpig a javascript fuzzer for pdf file format
+which tries to screw up adobe reader using javascript methods.
+
+
+<</HOWTO>>
+download spiderpig from here.
+
+*python 2.6 
+*any debugger
+and ofcourse pdf reader that you are going to test.
+
+
+spiderpig uses bruteforce method to abuse reader, it creates methods using all range of evil parameters
+if you are aware of fuzzers like axman and dranzer,you know what I am talking about.
+spiderpig reads methods prototype from an input file and creates stream of javascript code and then this stream
+is then added into pdf file using makepdf module.
+
+An example Input file is in spiderpig's directory named as test.proto
+test.proto contains methods prototypes with (object/namespace scope)which helps spiderpig to understand
+the method and its parameters.Add prototypes of methods which are you going to test in this file.
+each new method must be written on new line.
+
+for example if you want to test methods [alert] and [beep] methods from [app] object you can write prototype as follows
+
+app.alert(nIcon,nType,cTitle,oDoc,oCheckbox)
+app.beep(nType)
+
+it will create 2 pdfs 1 for app.alert(app.alert.pdf) and another for app.beep(app.beep.pdf).
+
+>>/parameters type:
+spiderpig understands type of parameter(strin,number,boolean,object) by reading
+the first character of parameter written in methods prototype. 
+spiderpig understands ,
+
+n for numbers
+b for boolean
+o for object
+c for string
+
+so while writing prototype add them as shown in above example.
+
+spiderpig uses javascript console(console.println and console.show) functionality provided by adobe reader to create log.
+so you can see which method call is being called.
+
+
+here are the steps to use spiderpig
+1>download spiderpig from here.
+2>extract it to folder 
+3>create a file for example test.proto in this file write methods prototypes
+4>open comand prompt and goto the folder.
+4>type python sp.py <folder-path> test.proto
+		where <folder-path> is exsisting folder in which pdfs will be created.
+5>open pdf reader.
+6>attach debugger.
+7>open pdf file in reader.
+8>do reverse engineering :-)
+
+<</TODO>>
+reader reporst syntax errors for some methods.
+add more evil parameters.
+how to automate process to find pointer inference ,memory corruption,use after frees ?
